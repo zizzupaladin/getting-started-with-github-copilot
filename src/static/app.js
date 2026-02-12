@@ -27,6 +27,41 @@ document.addEventListener("DOMContentLoaded", () => {
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
         `;
 
+        // Participants section (DOM-built for safety)
+        const participantsHeading = document.createElement("h5");
+        participantsHeading.className = "participants-heading";
+        participantsHeading.textContent = "Participants";
+
+        const participantsListEl = document.createElement("ul");
+        participantsListEl.className = "participants-list";
+
+        const participants = Array.isArray(details.participants) ? details.participants : [];
+        const maxVisible = 6;
+
+        if (participants.length === 0) {
+          const li = document.createElement("li");
+          li.className = "empty";
+          li.textContent = "No participants yet";
+          participantsListEl.appendChild(li);
+        } else {
+          const visible = participants.slice(0, maxVisible);
+          visible.forEach((p) => {
+            const li = document.createElement("li");
+            li.textContent = p;
+            participantsListEl.appendChild(li);
+          });
+
+          if (participants.length > maxVisible) {
+            const moreLi = document.createElement("li");
+            moreLi.className = "participants-more";
+            moreLi.textContent = `+${participants.length - maxVisible} more`;
+            participantsListEl.appendChild(moreLi);
+          }
+        }
+
+        activityCard.appendChild(participantsHeading);
+        activityCard.appendChild(participantsListEl);
+
         activitiesList.appendChild(activityCard);
 
         // Add option to select dropdown
